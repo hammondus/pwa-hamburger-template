@@ -1,7 +1,7 @@
 {
-  "name": "Southern Airlines App",
-  "short_name": "SAP",
-  "description": "Southern Airlines App: Go server, htmx navigation, draggable hamburger menu.",
+  "name": "My App",
+  "short_name": "MyApp",
+  "description": "My App: Go server, htmx navigation, draggable hamburger menu.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

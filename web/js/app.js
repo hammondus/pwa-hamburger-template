@@ -88,7 +88,7 @@
     navLinks.forEach(function (a) {
       a.classList.toggle("active", a === link);
     });
-    document.title = link.dataset.title + " - SAP";
+    document.title = link.dataset.title + " - My App";
   }
 
   // The drawer slides closed while the new content swaps in underneath —

@@ -3,11 +3,14 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Commands
-Build sap. The Southern Airlines App
+This repo is a GitHub *template* for PWA apps with a hamburger menu. All
+name-specific strings use the placeholder "My App" / `myapp`; the README's
+"Using this template" section lists every file to touch when renaming for a
+new project — keep that list up to date if you add another.
 ```sh
 go run . -dev                 # development: serves web/ from disk, so edit + refresh (no rebuild)
-go build -o sap .        # production: single binary with web/ embedded via go:embed
-./sap -addr :3000        # default addr is :8080
+go build -o myapp .      # production: single binary with web/ embedded via go:embed
+./myapp -addr :3000      # default addr is :8080
 ```
 
 There are no tests or linters configured. `web/` files are embedded at build
@@ -76,7 +79,7 @@ it would hang) and must keep doing so.
   in `web/js/app.js` (which drives the `<meta name="theme-color">`); both
   must stay in step, and `web/manifest.webmanifest` `theme_color` must match
   the midnight default.
-- `logo.png` at the repo root is a source asset, not served. The icons in
+- `assets/logo.png` is a source asset, not served. The icons in
   `web/icons/` are derived from it with `sips` (resize to ~66% width, pad to
   square with white, flatten alpha via a JPEG round-trip — opaque + the
   maskable safe zone matter for Android/iOS).

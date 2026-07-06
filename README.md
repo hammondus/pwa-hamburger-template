@@ -1,15 +1,43 @@
-# SAP
-Southern Airlines App
+# PWA hamburger-menu template
 
-A PWA App: Go server, htmx navigation, and a draggable hamburger menu.
+A template repo for PWA-style apps: Go server, htmx navigation, and a
+draggable hamburger menu. Everything app-specific is a "My App" / `myapp`
+placeholder — see [Using this template](#using-this-template) for the full
+list of things to rename.
 
 ## Run
 
 ```sh
-go build -o sap . && ./sap          # serve the embedded files on :8080
+go build -o myapp . && ./myapp      # serve the embedded files on :8080
 go run . -dev                                 # development: serve web/ from disk (edit + refresh, no rebuild)
 go run . -dev -addr :3000                     # different port
 ```
+
+## Using this template
+
+Create a repo from this template, then rename the placeholders. Every
+app-name string lives in one of these places:
+
+| File | What to change |
+| --- | --- |
+| `web/manifest.webmanifest` | `name`, `short_name`, `description` (what the installed PWA is called) |
+| `web/index.html` | `<title>` and the header `<h1>` |
+| `web/js/app.js` | the `" - My App"` suffix in `syncUI()` (browser-tab title) |
+| `web/sw.js` | `VERSION` cache-name prefix (`myapp-v1`) — also reset the version number to `v1` |
+| `web/pages/home.html` | headings and intro copy |
+| `web/pages/about.html` | the "This is My App…" blurb |
+| `go.mod` | module path (`example.com/myapp` → your module) |
+| `.gitignore` | the `/myapp` build-output entry, if you change the binary name |
+| `README.md` / `CLAUDE.md` | build commands use `myapp` as the binary name; replace this section with your own intro |
+
+Also replace the icons: drop your logo at `assets/logo.png` and regenerate
+`web/icons/` (`icon-192.png`, `icon-512.png`, `apple-touch-icon.png`) — they
+must be opaque (no alpha) and keep content inside the maskable safe zone; see
+the icon notes in `CLAUDE.md`. If you change the colour scheme, keep
+`theme_color` in the manifest, the `:root` colours in `web/css/style.css`,
+and the `SCHEMES` map in `web/js/app.js` in step.
+
+Nothing in `main.go` is app-specific.
 
 ## How it works
 

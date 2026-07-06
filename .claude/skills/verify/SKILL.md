@@ -1,9 +1,9 @@
 ---
 name: verify
-description: How to run and drive the SAP PWA to verify changes end-to-end.
+description: How to run and drive this PWA to verify changes end-to-end.
 ---
 
-# Verifying SAP changes
+# Verifying changes to this PWA
 
 ## Launch
 
