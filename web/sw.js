@@ -9,7 +9,30 @@
  * Bump VERSION to force old caches to be discarded on the next visit.
  */
 
-var VERSION = "sap-v11";
+var VERSION = "sap-v12";
+
+// How long to wait for the server before falling back to cache. An
+// unreachable host (machine asleep / other network) doesn't refuse the
+// connection like a stopped server does — the fetch would otherwise hang
+// for the OS timeout (60s+ on iOS) and the app appears frozen on launch.
+var NETWORK_TIMEOUT_MS = 4000;
+
+function fetchWithTimeout(request) {
+  var ctrl = new AbortController();
+  var timer = setTimeout(function () {
+    ctrl.abort();
+  }, NETWORK_TIMEOUT_MS);
+  return fetch(request, { signal: ctrl.signal }).then(
+    function (res) {
+      clearTimeout(timer);
+      return res;
+    },
+    function (err) {
+      clearTimeout(timer);
+      throw err;
+    }
+  );
+}
 
 var PRECACHE = [
   "/",
@@ -76,7 +99,7 @@ self.addEventListener("fetch", function (e) {
   var cacheKey = e.request.mode === "navigate" ? "/" : e.request;
 
   e.respondWith(
-    fetch(e.request)
+    fetchWithTimeout(e.request)
       .then(function (res) {
         if (res.ok) {
           var copy = res.clone();
