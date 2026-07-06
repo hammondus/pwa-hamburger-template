@@ -248,6 +248,7 @@ body.offline .toast {
   touch-action: none;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  opacity: .7;
 }
 
 .menu-btn.dragging {
