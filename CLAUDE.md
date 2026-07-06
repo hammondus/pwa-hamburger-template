@@ -69,9 +69,13 @@ it would hang) and must keep doing so.
 
 ## Conventions
 
-- The theme color `#1a4080` (sampled from the logo's navy) lives in **two**
-  places that must match: `web/manifest.webmanifest` and the
-  `<meta name="theme-color">` in `web/index.html`.
+- There are two colour schemes, picked on the Settings screen and persisted
+  in localStorage: "midnight" (`#0a1f3b`, the default) and "classic"
+  (`#1a4080` bar + accent hamburger). The scheme colors live in `:root` /
+  `body.theme-classic` in `web/css/style.css` and again in the `SCHEMES` map
+  in `web/js/app.js` (which drives the `<meta name="theme-color">`); both
+  must stay in step, and `web/manifest.webmanifest` `theme_color` must match
+  the midnight default.
 - `logo.png` at the repo root is a source asset, not served. The icons in
   `web/icons/` are derived from it with `sips` (resize to ~66% width, pad to
   square with white, flatten alpha via a JPEG round-trip — opaque + the

@@ -2,7 +2,37 @@
   "use strict";
 
   var STORAGE_KEY = "menuBtnPos";
+  var SCHEME_KEY = "colorScheme";
   var DRAG_THRESHOLD = 8; // px of movement before a press becomes a drag
+
+  /* ==================== Colour scheme ==================== */
+  // Two schemes, chosen on the Settings screen and persisted. The colors
+  // themselves live in CSS (body.theme-classic overrides the variables);
+  // the values here only feed the theme-color meta so the browser chrome
+  // matches. "midnight" must stay in step with manifest.webmanifest.
+
+  var SCHEMES = {
+    midnight: "#0a1f3b",
+    classic: "#1a4080"
+  };
+
+  function savedScheme() {
+    var s = null;
+    try {
+      s = localStorage.getItem(SCHEME_KEY);
+    } catch (e) { /* ignore */ }
+    return SCHEMES[s] ? s : "midnight";
+  }
+
+  function applyScheme(name) {
+    if (!SCHEMES[name]) name = "midnight";
+    document.body.classList.toggle("theme-classic", name === "classic");
+    document
+      .querySelector('meta[name="theme-color"]')
+      .setAttribute("content", SCHEMES[name]);
+  }
+
+  applyScheme(savedScheme());
 
   var btn = document.getElementById("menu-btn");
   var nav = document.getElementById("nav");
@@ -196,6 +226,25 @@
       btn.style.top = "";
     }
   });
+
+  main.addEventListener("change", function (e) {
+    if (e.target.id === "scheme-select") {
+      try {
+        localStorage.setItem(SCHEME_KEY, e.target.value);
+      } catch (err) { /* ignore — scheme applies but won't persist */ }
+      applyScheme(e.target.value);
+    }
+  });
+
+  // Reflect the saved scheme in the picker whenever the Settings fragment
+  // arrives (fresh fetch or back/forward history restore).
+  function syncSchemeControl() {
+    var sel = document.getElementById("scheme-select");
+    if (sel) sel.value = savedScheme();
+  }
+
+  document.body.addEventListener("htmx:afterSwap", syncSchemeControl);
+  document.body.addEventListener("htmx:historyRestore", syncSchemeControl);
 
   /* ==================== Offline feedback ==================== */
   // htmx fails silently when a fragment request dies (e.g. offline with no

@@ -7,6 +7,19 @@
   --page-fg: #22292f;
   --card-bg: #ffffff;
   --btn-size: 56px;
+  /* Top bar navy (default "midnight" scheme); the manifest theme_color and
+     the SCHEMES map in app.js must agree with these scheme colors */
+  --bar-bg: #0a1f3b;
+  --menu-btn-bg: var(--bar-bg);
+  --bar-height: 52px;
+}
+
+/* "Classic" scheme: the original logo navy bar + accent-blue hamburger.
+   app.js stamps this class from the saved setting and keeps the
+   <meta name="theme-color"> in sync. */
+body.theme-classic {
+  --bar-bg: #1a4080;
+  --menu-btn-bg: var(--accent);
 }
 
 * {
@@ -26,11 +39,38 @@ body {
   overflow-x: hidden;
 }
 
+/* ---------- Top bar ---------- */
+
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Extend behind the iOS status bar / notch area */
+  height: calc(var(--bar-height) + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) 20px 0;
+  display: flex;
+  align-items: center;
+  background: var(--bar-bg);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  /* Below the overlay (800) and nav drawer (900) so both cover it */
+  z-index: 700;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
 /* ---------- Screens ---------- */
 
 main {
   padding: 24px;
-  padding-top: max(24px, env(safe-area-inset-top));
+  /* Clear the fixed top bar */
+  padding-top: calc(var(--bar-height) + env(safe-area-inset-top) + 24px);
   max-width: 720px;
   margin: 0 auto;
 }
@@ -228,14 +268,15 @@ body.offline .toast {
 
 .menu-btn {
   position: fixed;
-  /* Default position; overridden from JS with a saved position */
-  top: 16px;
+  /* Default position (just below the top bar); overridden from JS with a
+     saved position */
+  top: calc(var(--bar-height) + env(safe-area-inset-top) + 12px);
   left: 16px;
   width: var(--btn-size);
   height: var(--btn-size);
   border: none;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--menu-btn-bg);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   cursor: grab;
   z-index: 1000;

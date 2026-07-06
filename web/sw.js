@@ -9,7 +9,7 @@
  * Bump VERSION to force old caches to be discarded on the next visit.
  */
 
-var VERSION = "sap-v9";
+var VERSION = "sap-v11";
 
 var PRECACHE = [
   "/",
